@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Add Movie</title>
+    {% load static %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-dark text-light">
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-dark bg-black px-4">
+    <span class="navbar-brand">OTT Admin</span>
+    <a href="#" class="btn btn-outline-light btn-sm">Logout</a>
+</nav>
+
+<div class="container mt-4">
+
+    <!-- PAGE TITLE -->
+    <h4 class="mb-4">Add New Movie</h4>
+
+    <!-- FORM CARD -->
+    <div class="card bg-secondary text-light shadow">
+        <div class="card-body">
+
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <!-- MOVIE TITLE -->
+                <div class="mb-3">
+                    <label class="form-label">Movie Title</label>
+                    <input type="text" class="form-control bg-dark text-light border-0"
+                           placeholder="Enter movie title">
+                </div>
+
+                <!-- DESCRIPTION -->
+                <div class="mb-3">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-control bg-dark text-light border-0"
+                              rows="4"
+                              placeholder="Enter movie description"></textarea>
+                </div>
+
+                <!-- IMAGE UPLOAD -->
+                <div class="mb-3">
+                    <label class="form-label">Movie Poster</label>
+                    <input type="file" class="form-control bg-dark text-light border-0">
+                </div>
+
+                <!-- VIDEO UPLOAD -->
+                <div class="mb-4">
+                    <label class="form-label">Movie Video</label>
+                    <input type="file" class="form-control bg-dark text-light border-0">
+                </div>
+
+                <!-- BUTTONS -->
+                <div class="d-flex justify-content-end">
+                    <a href="{% url 'movies' %}" class="btn btn-outline-light me-2">
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn btn-success">
+                        Save Movie
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Change Password</title>
+
+    {% load static %}
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+
+    <!-- External CSS (same as earlier) -->
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+
+<!-- Navbar (same as earlier) -->
+<nav class="navbar navbar-dark">
+    <span class="navbar-brand">OTT Admin Panel</span>
+    <button class="btn btn-outline-light btn-sm">Logout</button>
+</nav>
+
+<!-- Password Change Card (same size as login card) -->
+<div class="login-box">
+    <h3>Change Password</h3>
+
+    <form>
+        <div class="form-group">
+            <label>Username</label>
+            <input type="text" class="form-control" placeholder="Enter username">
+        </div>
+
+        <div class="form-group">
+            <label>Current Password</label>
+            <input type="password" class="form-control" placeholder="Enter current password">
+        </div>
+
+        <div class="form-group">
+            <label>New Password</label>
+            <input type="password" class="form-control" placeholder="Enter new password">
+        </div>
+
+        <!-- Button triggers modal -->
+        <button type="button"
+                class="btn btn-primary btn-block"
+                data-toggle="modal"
+                data-target="#confirmModal">
+            Submit
+        </button>
+    </form>
+</div>
+
+<!-- Confirmation Modal -->
+<div class="modal fade" id="confirmModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-dark text-white">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Action</h5>
+                <button type="button" class="close text-white" data-dismiss="modal">
+                    &times;
+                </button>
+            </div>
+
+            <div class="modal-body text-center">
+                Are you sure you want to change your password?
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-dismiss="modal">
+                    Cancel
+                </button>
+                <button class="btn btn-primary">
+                    Yes, Change
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

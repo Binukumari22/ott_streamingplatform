@@ -1,0 +1,112 @@
+/* OTT background with image + gradient overlay */
+body {
+    min-height: 100vh;
+
+    background:
+     
+
+       
+        url("/static/bg1.jpg");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    font-family: Arial, sans-serif;
+}
+
+
+/* Navbar background */
+.ott-navbar {
+    background: linear-gradient(90deg, #f1e5ef, #f5e6f7, #d2c7d5);
+    padding: 12px 24px;
+    box-shadow: 0 4px 10px rgba(237, 236, 236, 0.4);
+}
+
+/* Brand text */
+.ott-navbar .navbar-brand {
+    color: #ffffff;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+/* Purple buttons */
+.ott-nav-btn {
+    background-color: #ffffff;
+    color: #9a1b87;
+    border: none;
+    padding: 6px 16px;
+    margin-left: 10px;
+    border-radius: 20px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+/* Hover effect */
+.ott-nav-btn:hover {
+    background-color: #e1bee7;
+    color: #ec29a1;
+    text-decoration: none;
+}
+
+
+
+/* Logout button */
+.btn-outline-light {
+    border-color: #ffffff;
+    color: #ffffff;
+}
+
+.btn-outline-light:hover {
+    background-color: #ffffff;
+    color: #f8f5fc;
+}
+
+
+
+/* Login card */
+.login-box {
+    width: 400px;
+    margin: 100px auto;
+    padding: 30px;
+    background-color: #111;
+    border-radius: 12px;
+    box-shadow: 0px 10px 30px rgba(0,0,0,0.8);
+}
+
+/* Card heading */
+.login-box h3 {
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+/* Labels */
+.login-box label {
+    color: #cccccc;
+}
+
+/* Input fields */
+.login-box .form-control {
+    background-color: #1c1c1c;
+    border: 1px solid #333;
+    color: #ffffff;
+}
+
+.login-box .form-control:focus {
+    background-color: #1c1c1c;
+    color: #ffffff;
+    border-color: #4b9cd3;
+    box-shadow: none;
+}
+
+/* Login button */
+.login-box .btn-primary {
+    background-color: #4b9cd3;
+    border: none;
+}
+
+.login-box .btn-primary:hover {
+    background-color: #367bb5;
+}
+
