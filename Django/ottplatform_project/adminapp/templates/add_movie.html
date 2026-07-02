@@ -16,41 +16,68 @@
 
 <div class="container mt-4">
 
-    <!-- PAGE TITLE -->
     <h4 class="mb-4">Add New Movie</h4>
 
-    <!-- FORM CARD -->
     <div class="card bg-secondary text-light shadow">
         <div class="card-body">
 
-            <form method="post" enctype="multipart/form-data">
+            <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
 
                 <!-- MOVIE TITLE -->
                 <div class="mb-3">
                     <label class="form-label">Movie Title</label>
-                    <input type="text" class="form-control bg-dark text-light border-0"
-                           placeholder="Enter movie title">
+                    <input type="text"
+                           name="title"
+                           class="form-control bg-dark text-light border-0"
+                           placeholder="Enter movie title"
+                           required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Genre</label>
+                    <input type="text"
+                           name="genre"
+                           class="form-control bg-dark text-light border-0"
+                           placeholder="Enter movie genre"
+                           required>
                 </div>
 
                 <!-- DESCRIPTION -->
                 <div class="mb-3">
                     <label class="form-label">Description</label>
-                    <textarea class="form-control bg-dark text-light border-0"
+                    <textarea name="description"
+                              class="form-control bg-dark text-light border-0"
                               rows="4"
-                              placeholder="Enter movie description"></textarea>
+                              placeholder="Enter movie description"
+                              required></textarea>
                 </div>
 
                 <!-- IMAGE UPLOAD -->
                 <div class="mb-3">
                     <label class="form-label">Movie Poster</label>
-                    <input type="file" class="form-control bg-dark text-light border-0">
+                    <input type="file"
+                           name="thumbnail"
+                           class="form-control bg-dark text-light border-0">
                 </div>
 
                 <!-- VIDEO UPLOAD -->
                 <div class="mb-4">
                     <label class="form-label">Movie Video</label>
-                    <input type="file" class="form-control bg-dark text-light border-0">
+                    <input type="file"
+                           name="video"
+                           class="form-control bg-dark text-light border-0">
+                </div>
+
+                <div class="mb-3 form-check">
+                   <input type="checkbox"
+                        name="featured"
+                        class="form-check-input"
+                        id="featuredCheck">
+
+                    <label class="form-check-label" for="featuredCheck">
+                        Mark as Featured Movie
+                    </label>
                 </div>
 
                 <!-- BUTTONS -->

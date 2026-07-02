@@ -1,27 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Edit Movie</title>
-    {% load static %}
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
+{% extends "navbar.html" %}
 
-<body class="bg-dark text-light">
+{% block title %}Edit Movie{% endblock %}
 
-<!-- NAVBAR -->
-<nav class="navbar navbar-dark bg-black px-4">
-    <span class="navbar-brand">OTT Admin</span>
-    <a href="#" class="btn btn-outline-light btn-sm">Logout</a>
-</nav>
+{% block content %}
 
 <div class="container mt-4">
 
-    <h4 class="mb-4">Edit Movie</h4>
+    <h4 class="mb-4 text-white">Edit Movie</h4>
 
     <div class="card bg-secondary text-light shadow">
         <div class="card-body">
 
-            <form method="post" enctype="multipart/form-data">
+            <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
 
                 <!-- MOVIE TITLE -->
@@ -33,6 +23,15 @@
                            class="form-control bg-dark text-light border-0">
                 </div>
 
+                <!-- GENRE -->
+                <div class="mb-3">
+                    <label class="form-label">Genre</label>
+                    <input type="text"
+                           name="genre"
+                           value="{{ movie.genre }}"
+                           class="form-control bg-dark text-light border-0">
+                </div>
+
                 <!-- DESCRIPTION -->
                 <div class="mb-3">
                     <label class="form-label">Description</label>
@@ -41,18 +40,44 @@
                               class="form-control bg-dark text-light border-0">{{ movie.description }}</textarea>
                 </div>
 
+                <!-- CURRENT IMAGE PREVIEW -->
+                <div class="mb-3">
+                    <label class="form-label">Current Poster</label><br>
+                    {% if movie.thumbnail %}
+                        <img src="{{ movie.thumbnail.url }}"
+                             style="width:120px"
+                             class="img-thumbnail mb-2">
+                    {% else %}
+                        <p class="text-muted">No image</p>
+                    {% endif %}
+                </div>
+
                 <!-- IMAGE -->
                 <div class="mb-3">
                     <label class="form-label">Change Poster</label>
-                    <input type="file" name="image"
+                    <input type="file"
+                           name="thumbnail"
                            class="form-control bg-dark text-light border-0">
                 </div>
 
                 <!-- VIDEO -->
                 <div class="mb-4">
                     <label class="form-label">Change Video</label>
-                    <input type="file" name="video"
+                    <input type="file"
+                           name="video"
                            class="form-control bg-dark text-light border-0">
+                </div>
+
+                <!-- FEATURED -->
+                <div class="mb-3 form-check">
+                    <input type="checkbox"
+                           name="featured"
+                           class="form-check-input"
+                           id="featuredCheck"
+                           {% if movie.featured %}checked{% endif %}>
+                    <label class="form-check-label" for="featuredCheck">
+                        Mark as Featured Movie
+                    </label>
                 </div>
 
                 <!-- BUTTONS -->
@@ -72,5 +97,4 @@
 
 </div>
 
-</body>
-</html>
+{% endblock %}

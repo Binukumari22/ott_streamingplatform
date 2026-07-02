@@ -16,7 +16,7 @@ class WatchlistSerializer(serializers.ModelSerializer):
     movie = MovieSerializer(read_only=True)
     class Meta:
         model = Watchlist
-        fields = '__all__'
+        fields = ['id', 'movie']
         
 class WatchHistorySerializer(serializers.ModelSerializer):
     movie = MovieSerializer(read_only=True)

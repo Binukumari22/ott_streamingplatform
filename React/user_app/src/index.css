@@ -1,0 +1,110 @@
+/* ============================================================
+   STREAMVAULT — Global Design Tokens
+   Palette: Deep cosmic navy + electric violet accent + neon teal
+   Type: 'Inter' system stack, display weight contrast
+   Signature: Glowing neon edge-light on cards + scanline texture
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+  /* === PALETTE === */
+  --bg-void:      #04050a;
+  --bg-deep:      #080c18;
+  --bg-surface:   #0d1220;
+  --bg-raised:    #141826;
+  --bg-card:      #111624;
+
+  --accent-violet: #7c3aed;
+  --accent-blue:   #2563eb;
+  --accent-teal:   #06b6d4;
+  --accent-rose:   #f43f5e;
+
+  --glow-violet: rgba(124, 58, 237, 0.35);
+  --glow-teal:   rgba(6, 182, 212, 0.25);
+
+  --text-primary: #e8edf5;
+  --text-secondary: #7f8ea3;
+  --text-muted:   #4a5568;
+
+  --border-dim:   rgba(255,255,255,0.05);
+  --border-glow:  rgba(124,58,237,0.4);
+
+  /* === GRADIENTS === */
+  --grad-bg:      linear-gradient(170deg, #04050a 0%, #080d1f 50%, #100a20 100%);
+  --grad-accent:  linear-gradient(90deg, #7c3aed, #2563eb);
+  --grad-card:    linear-gradient(145deg, #111624, #0d1220);
+  --grad-teal:    linear-gradient(90deg, #06b6d4, #2563eb);
+
+  /* === SHADOWS === */
+  --shadow-card:  0 4px 24px rgba(0,0,0,0.6), 0 1px 4px rgba(0,0,0,0.4);
+  --shadow-glow:  0 0 40px rgba(124,58,237,0.3), 0 8px 32px rgba(0,0,0,0.7);
+  --shadow-deep:  0 20px 60px rgba(0,0,0,0.8);
+
+  /* === TYPOGRAPHY === */
+  --font-body:    'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Inter', system-ui, sans-serif;
+
+  /* === RADII === */
+  --radius-sm:  6px;
+  --radius-md:  12px;
+  --radius-lg:  18px;
+  --radius-xl:  24px;
+}
+
+/* ---- RESET & BASE ---- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg-void);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  /* Subtle scanline texture — the signature element */
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(255,255,255,0.008) 2px,
+      rgba(255,255,255,0.008) 4px
+    ),
+    var(--grad-bg);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-deep); }
+::-webkit-scrollbar-thumb {
+  background: var(--accent-violet);
+  border-radius: 99px;
+}
+
+a {
+  color: var(--accent-violet);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+a:hover { color: var(--accent-teal); }
+
+input, button, select { font-family: inherit; }
+
+/* Utility: neon glow text */
+.neon-text {
+  background: var(--grad-accent);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}

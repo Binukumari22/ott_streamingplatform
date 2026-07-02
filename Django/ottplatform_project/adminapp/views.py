@@ -1,14 +1,12 @@
-from django.shortcuts import render
+
 from django.contrib.auth import authenticate, login
-from django.shortcuts import redirect, get_object_or_404 
+from django.shortcuts import render,redirect, get_object_or_404 
 from django.core.paginator import Paginator  
-from .models import Movie   
+from .models import Movie , User , Watchlist,watchHistory
+from django.db.models import Q, Count  
 
 
-
-from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
-
+# LOGIN
 def adminlogin(request):
 
     if request.method == 'POST':
@@ -28,15 +26,14 @@ def adminlogin(request):
 
     return render(request, 'login.html')
 
-def settings(request):
-    
-    
-    
-    return render(request,'accsettings.html')
+
 
 def movies(request):
+    search_query = request.GET.get('search', '')
     movies = Movie.objects.all().order_by('id')
-
+    if search_query:
+        movies = movies.filter(title__icontains=search_query)
+        
     paginator = Paginator(movies, 3)   # 5 movies per page
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -49,56 +46,62 @@ def movies(request):
      
 
 def movie_details(request, movie_id):
-
     movie = get_object_or_404(Movie, id=movie_id)
-
-    return render(request, 'movie_details.html', {
-        'movie': movie
-    })
-
-def user_history(request, user_id):
-    return render(request, 'user_history.html')
+    return render(request, 'movie_details.html', {'movie': movie})
 
 
 
-def report(request):
-    reports = [
-        {"movie": "Inception", "count": 150},
-        {"movie": "Interstellar", "count": 120},
-        {"movie": "The Dark Knight", "count": 95},
-        {"movie": "Avatar", "count": 60},
-        {"movie": "Titanic", "count": 30},
-    ]
 
-    # already ordered high → low for learning
-    return render(request, "report.html", {"reports": reports})
+def add_movie(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        genre = request.POST.get('genre')   
+        description = request.POST.get('description')
+        thumbnail = request.FILES.get('thumbnail')
+        video = request.FILES.get('video')
+        
+          
+        is_featured = request.POST.get('featured') == 'on'
 
-def addmovies(request):
-    return render(request,'add_movie.html')
+        # Save to database
+        Movie.objects.create(
+            title=title,
+            genre=genre,
+            description=description,
+            thumbnail=thumbnail,
+            video=video,
+            is_featured=is_featured,
+        )
+
+        return redirect('movies')  # after save
+
+    return render(request, 'add_movie.html')
 
 
 
 def editmovie(request, movie_id):
 
-    # get the movie object
     movie = get_object_or_404(Movie, id=movie_id)
 
-    # when form submitted
     if request.method == "POST":
-        movie.title = request.POST.get('title')
-        movie.description = request.POST.get('description')
+        
+        movie.title = request.POST.get('title') or movie.title
+        movie.genre = request.POST.get('genre') or movie.genre
+        movie.description = request.POST.get('description') or movie.description
 
-        # update image if new one uploaded
-        if request.FILES.get('image'):
-            movie.image = request.FILES.get('image')
+     
+        movie.featured = request.POST.get('featured') == 'on'
 
-        # update video if new one uploaded
+        
+        if request.FILES.get('thumbnail'):
+            movie.thumbnail = request.FILES.get('thumbnail')
+
         if request.FILES.get('video'):
             movie.video = request.FILES.get('video')
 
         movie.save()
 
-        return redirect('movies')  # go back to movies page
+        return redirect('movies')
 
     return render(request, 'edit_movie.html', {'movie': movie})
 
@@ -109,6 +112,73 @@ def delete_movie(request, movie_id):
     movie.delete()
     return redirect('movies')
 
+def settings(request):
+    return render(request,'accsettings.html')
+
+
+#  USERS LIST + SEARCH
+def users(request):
+    search_query = request.GET.get('search')
+
+    users = User.objects.all().order_by('id')
+    print(User.objects.all())
+    
+
+    #  SEARCH
+    if search_query:
+        users = users.filter(
+            Q(username__icontains=search_query) |
+            Q(email__icontains=search_query)
+        )
+
+    return render(request, 'users.html', {
+        'users': users
+    })
+
+
+# BLOCK USER
+def block_user(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+
+    user.is_blocked = True
+    user.save()
+
+    return redirect('users')
+
+
+# UNBLOCK USER
+def unblock_user(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+
+    user.is_blocked = False
+    user.save()
+
+    return redirect('users')
+
+
+
+# REPORT
+
+def report(request):
+
+    reports = (
+        watchHistory.objects
+        .values('movie__id', 'movie__title')
+        .annotate(count=Count('id'))
+        .order_by('-count')
+    )
+
+    return render(request, 'report.html', {
+        'reports': reports
+    })
+
+def all_user_history(request):
+    
+    history = watchHistory.objects.all().select_related('user', 'movie')
+
+    return render(request, 'user_history.html', {
+        'history': history
+    })
 
     
 

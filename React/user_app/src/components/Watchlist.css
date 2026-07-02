@@ -1,0 +1,114 @@
+/* ============================================================
+   WATCHLIST / WATCH HISTORY — Grid pages
+   ============================================================ */
+
+.watchlist-page {
+  min-height: 100vh;
+  padding: 36px 32px 64px;
+  color: var(--text-primary);
+}
+
+.watchlist-title {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.6px;
+  margin-bottom: 30px;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Accent dot before title */
+.watchlist-title::before {
+  content: '';
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--grad-teal);
+  display: inline-block;
+  box-shadow: 0 0 14px var(--accent-teal);
+}
+
+/* Empty state */
+.watchlist-page > div > p {
+  color: var(--text-secondary);
+  font-size: 15px;
+  padding: 40px 0;
+  text-align: center;
+}
+
+/* ---- GRID ---- */
+.watchlist-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(158px, 1fr));
+  gap: 20px;
+}
+
+/* ---- MOVIE CARD ---- */
+.movie-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid var(--border-dim);
+  position: relative;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s;
+}
+
+.movie-card img {
+  width: 100%;
+  height: 228px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.movie-card p {
+  padding: 10px 10px 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.movie-card:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow:
+    0 0 0 1.5px rgba(124,58,237,0.4),
+    0 16px 48px rgba(0,0,0,0.7),
+    0 0 20px rgba(124,58,237,0.15);
+  border-color: rgba(124,58,237,0.35);
+}
+
+.movie-card:hover img {
+  transform: scale(1.05);
+}
+
+/* ---- REMOVE BUTTON ---- */
+.remove-btn {
+  display: block;
+  width: calc(100% - 20px);
+  margin: 0 10px 12px;
+  padding: 7px 0;
+  background: rgba(244,63,94,0.08);
+  border: 1px solid rgba(244,63,94,0.25);
+  border-radius: var(--radius-sm);
+  color: var(--accent-rose);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.remove-btn:hover {
+  background: rgba(244,63,94,0.18);
+  border-color: rgba(244,63,94,0.5);
+}
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 580px) {
+  .watchlist-page { padding: 22px 16px 48px; }
+  .watchlist-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 14px; }
+  .movie-card img { height: 190px; }
+}

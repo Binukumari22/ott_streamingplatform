@@ -1,12 +1,10 @@
 /* OTT background with image + gradient overlay */
+
+
 body {
     min-height: 100vh;
-
-    background:
-     
-
-       
-        url("/static/bg1.jpg");
+    
+    background: url("/static/bg1.jpg");
 
     background-size: cover;
     background-position: center;
@@ -67,7 +65,7 @@ body {
 /* Login card */
 .login-box {
     width: 400px;
-    margin: 100px auto;
+    margin: 60px auto;
     padding: 30px;
     background-color: #111;
     border-radius: 12px;

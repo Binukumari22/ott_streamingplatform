@@ -7,7 +7,7 @@ from django.contrib.auth import authenticate
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND
 from rest_framework.authtoken.models import Token
-from adminapp.models import Movie, User , Watchlist,watchHistory
+from adminapp.models import Movie, User , Watchlist, watchHistory
 from userapi_app.serializers import MovieSerializer
 from userapi_app.serializers import WatchlistSerializer,WatchHistorySerializer
 from rest_framework.permissions import IsAuthenticated
@@ -84,28 +84,35 @@ def list_movie(request, genre):
     serializer = MovieSerializer(movies, many=True)
     return Response(serializer.data)
 
-
 @api_view(['POST'])
 @permission_classes((IsAuthenticated,))
 def watch_list_add(request):
-    user_id = request.data.get('user_id')
+
+    user = request.user
     movie_id = request.data.get('movie_id')
+
     try:
-        user = User.objects.get(id=user_id)
-        movie = Movie.objects.get(id=movie_id)  
-    except User.DoesNotExist:
-        return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+        movie = Movie.objects.get(id=movie_id)
     except Movie.DoesNotExist:
-        return Response({'error': 'Movie not found'}, status=status.HTTP_404_NOT_FOUND)
-    watch_list = Watchlist.objects.create(user=user, movie=movie)
-    return Response({'message': 'Movie added to watchlist'}, status=status.HTTP_201_CREATED)
+        return Response({'error': 'Movie not found'}, status=404)
+
+    watchlist_item, created = Watchlist.objects.get_or_create(
+        user=user,
+        movie=movie
+    )
+
+    if created:
+        return Response({'message': 'Movie added to watchlist'}, status=201)
+    else:
+        return Response({'message': 'Already in watchlist'}, status=200)
   
 @api_view(['GET'])
 @permission_classes((IsAuthenticated,))
 def watch_list(request):
-    user = request.user
-    watchlist = Watchlist.objects.filter(user=user)
+
+    watchlist = Watchlist.objects.filter(user=request.user).select_related('movie')
     serializer = WatchlistSerializer(watchlist, many=True)
+
     return Response(serializer.data)
 
 @api_view(['DELETE'])
@@ -143,75 +150,69 @@ def remove_from_watchlist(request):
 def watch_history_add(request):
 
     user = request.user
+
     movie_id = request.data.get('movie_id')
 
     try:
+
         movie = Movie.objects.get(id=movie_id)
+
     except Movie.DoesNotExist:
+
         return Response(
-            {'error': 'Movie not found'},status=status.HTTP_404_NOT_FOUND)
+            {'error': 'Movie not found'},
+            status=404
+        )
 
-    watch_history = watchHistory.objects.create(user=user,movie=movie )
+    watchHistory.objects.create(
+        user=user,
+        movie=movie
+    )
 
-    return Response({'message': 'Movie added to watch history'},status=status.HTTP_201_CREATED)
-
+    return Response(
+        {'message': 'Added to history'},
+        status=201
+    )
 
 @api_view(['GET'])
 @permission_classes((IsAuthenticated,))
 def watch_history(request):
 
-    user = request.user
-
-    watch_history = watchHistory.objects.filter(
-        user=user
-    ).order_by('-watched_at')
-
-    unique_movies = {}
-
-    for entry in watch_history:
-        unique_movies[entry.movie.id] = entry
+    history = watchHistory.objects.filter(
+        user=request.user
+    ).select_related('movie')
 
     serializer = WatchHistorySerializer(
-        unique_movies.values(),
+        history,
         many=True
     )
 
     return Response(serializer.data)
 
-
 @api_view(['GET'])
-@permission_classes((IsAuthenticated,))
 def search_movies(request):
-    query = request.query_params.get('query', '')
 
-    if not query:
-        return Response( {"error": "Search query is required"},status=400)
+    query = request.GET.get('q', '')
 
-    movies = Movie.objects.filter(title__icontains=query)
-    serializer = MovieSerializer(movies, many=True)
-    return Response(serializer.data)
+    # if empty search
+    if query == '':
+        return Response([], status=200)
 
-@api_view(['PUT'])
-@permission_classes((IsAuthenticated,))
-def change_password(request):
+    movies = Movie.objects.filter(
+        title__icontains=query
+    )
 
-    user = request.user
-    old_password = request.data.get('old_password')
-    new_password = request.data.get('new_password')
+    serializer = MovieSerializer(
+        movies,
+        many=True
+    )
 
-    if not user.check_password(old_password):
-        return Response(
-            {'error': 'Old password is incorrect'},status=status.HTTP_400_BAD_REQUEST)
-
-    user.set_password(new_password)
-    user.save()
-
-    return Response(
-        {'message': 'Password changed successfully'},status=status.HTTP_200_OK)
-    
+    return Response(serializer.data, status=200)
+   
     
 @api_view(['GET'])
-def movie_details(request, movie_id):
+@permission_classes((AllowAny,))
+def usermovie_details(request, movie_id):
 
     try:
         movie = Movie.objects.get(id=movie_id)
@@ -221,3 +222,43 @@ def movie_details(request, movie_id):
     serializer = MovieSerializer(movie)
 
     return Response(serializer.data)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+
+def userchange_password(request):
+
+    user = request.user
+
+    old_password = request.data.get("old_password")
+
+    new_password = request.data.get("new_password")
+
+    # CHECK OLD PASSWORD
+    if not user.check_password(old_password):
+
+        return Response(
+            {"error": "Old password is incorrect"},
+            status=400
+        )
+
+    # SET NEW PASSWORD
+    user.set_password(new_password)
+
+    user.save()
+
+    return Response({
+        "message": "Password changed successfully"
+    })
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+
+def userlogout(request):
+
+    request.user.auth_token.delete()
+
+    return Response(
+        {"message": "Logged out successfully"}
+    )

@@ -1,8 +1,10 @@
-{% extends "base.html" %}
+{% extends "navbar.html" %}
 
 {% block title %}Movies List{% endblock %}
 
 {% block content %}
+
+
 
 <div class="container mt-5">
 
@@ -10,9 +12,16 @@
 
         <div class="col-md-6">
             <h3 class="text-white font-weight-bold">🎬 Movies List</h3>
-            <input type="text"
-                   class="form-control mt-2"
-                   placeholder="Search movie...">
+
+            <!-- SEARCH FORM -->
+            <form method="GET">
+                <input type="text"
+                       name="search"
+                       class="form-control mt-2"
+                       placeholder="Search movie..."
+                       value="{{ request.GET.search }}">
+            </form>
+
         </div>
 
         <div class="col-md-6 text-right">
@@ -22,7 +31,6 @@
         </div>
 
     </div>
-
 
     <!-- Movies Table -->
     <div class="table-responsive">
@@ -41,115 +49,110 @@
 
             <tbody>
 
-                {% for movie in page_obj %}
+                {% if page_obj %}
+                    {% for movie in page_obj %}
 
-                <tr>
-                    <td>{{ forloop.counter }}</td>
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
 
-                    <td>{{ movie.title }}</td>
+                        <td>{{ movie.title }}</td>
 
-                    <td>
-                        {% if movie.thumbnail %}
-                        <img src="{{ movie.thumbnail.url }}"
-                             class="img-thumbnail"
-                             style="width:100px">
-                        {% else %}
-                        <span class="text-muted">No Image</span>
-                        {% endif %}
-                    </td>
+                        <td>
+                            {% if movie.thumbnail %}
+                            <img src="{{ movie.thumbnail.url }}"
+                                 class="img-thumbnail"
+                                 style="width:100px">
+                            {% else %}
+                            <span class="text-muted">No Image</span>
+                            {% endif %}
+                        </td>
 
-                    <td>
-                        <a href="{% url 'movie_details' movie.id %}"
-                           class="btn btn-outline-purple btn-sm">
-                           View Details
-                        </a>
-                    </td>
+                        <td>
+                            <a href="{% url 'movie_details' movie.id %}"
+                               class="btn btn-outline-purple btn-sm">
+                               View Details
+                            </a>
+                        </td>
 
-                    <td>
-                        <a href="{% url 'editmovie' movie.id %}"
-                           class="btn btn-warning btn-sm">
-                           Edit
-                        </a>
-                    </td>
+                        <td>
+                            <a href="{% url 'editmovie' movie.id %}"
+                               class="btn btn-warning btn-sm">
+                               Edit
+                            </a>
+                        </td>
 
-                    <td>
-                        <a href="{% url 'delete_movie' movie.id %}"
-                           class="btn btn-danger btn-sm">
-                           Delete
-                        </a>
-                    </td>
+                        <td>
+                            <a href="{% url 'delete_movie' movie.id %}"
+                               class="btn btn-danger btn-sm">
+                               Delete
+                            </a>
+                        </td>
 
-                </tr>
+                    </tr>
 
-                {% endfor %}
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center">No movies found</td>
+                    </tr>
+                {% endif %}
 
             </tbody>
 
         </table>
     </div>
 
-
     <!-- Pagination -->
     <div class="d-flex justify-content-end">
 
         <ul class="pagination pagination-sm">
 
+            <!-- Previous -->
             {% if page_obj.has_previous %}
-
             <li class="page-item">
                 <a class="page-link"
-                   href="?page={{ page_obj.previous_page_number }}">
+                   href="?page={{ page_obj.previous_page_number }}&search={{ request.GET.search }}">
                    Previous
                 </a>
             </li>
-
             {% else %}
-
             <li class="page-item disabled">
                 <a class="page-link">Previous</a>
             </li>
-
             {% endif %}
 
-
+            <!-- Page Numbers -->
             {% for num in page_obj.paginator.page_range %}
 
                 {% if page_obj.number == num %}
-
                 <li class="page-item active">
                     <a class="page-link bg-purple border-purple">
                         {{ num }}
                     </a>
                 </li>
-
                 {% else %}
-
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ num }}">
+                    <a class="page-link"
+                       href="?page={{ num }}&search={{ request.GET.search }}">
                         {{ num }}
                     </a>
                 </li>
-
                 {% endif %}
 
             {% endfor %}
 
-
+            <!-- Next -->
             {% if page_obj.has_next %}
-
             <li class="page-item">
                 <a class="page-link"
-                   href="?page={{ page_obj.next_page_number }}">
+                   href="?page={{ page_obj.next_page_number }}&search={{ request.GET.search }}">
                    Next
                 </a>
             </li>
-
             {% else %}
-
             <li class="page-item disabled">
                 <a class="page-link">Next</a>
             </li>
-
             {% endif %}
 
         </ul>

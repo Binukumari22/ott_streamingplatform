@@ -1,0 +1,10 @@
+/* Watch History shares Watchlist grid styles — any overrides below */
+
+.watchlist-page .watchlist-title {
+  /* Override dot color for history */
+}
+
+.watchlist-page .watchlist-title::before {
+  background: var(--grad-accent);
+  box-shadow: 0 0 14px var(--accent-violet);
+}

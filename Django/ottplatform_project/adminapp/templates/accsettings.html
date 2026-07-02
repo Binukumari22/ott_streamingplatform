@@ -1,53 +1,56 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Change Password</title>
+{% extends "navbar.html" %}
 
-    {% load static %}
+{% load static %}
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+{% block title %}Change Password{% endblock %}
 
-    <!-- External CSS (same as earlier) -->
-    <link rel="stylesheet" href="{% static 'style.css' %}">
-</head>
-<body>
+{% block content %}
 
-<!-- Navbar (same as earlier) -->
-<nav class="navbar navbar-dark">
-    <span class="navbar-brand">OTT Admin Panel</span>
-    <button class="btn btn-outline-light btn-sm">Logout</button>
-</nav>
+<!-- External CSS -->
+<link rel="stylesheet" href="{% static 'style.css' %}">
 
-<!-- Password Change Card (same size as login card) -->
-<div class="login-box">
-    <h3>Change Password</h3>
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
 
-    <form>
-        <div class="form-group">
-            <label>Username</label>
-            <input type="text" class="form-control" placeholder="Enter username">
-        </div>
+    <div class="login-box">
+        <h3 class="text-center">Change Password</h3>
 
-        <div class="form-group">
-            <label>Current Password</label>
-            <input type="password" class="form-control" placeholder="Enter current password">
-        </div>
+        <form method="POST">
+            {% csrf_token %}
 
-        <div class="form-group">
-            <label>New Password</label>
-            <input type="password" class="form-control" placeholder="Enter new password">
-        </div>
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text"
+                       name="username"
+                       class="form-control"
+                       placeholder="Enter username">
+            </div>
 
-        <!-- Button triggers modal -->
-        <button type="button"
-                class="btn btn-primary btn-block"
-                data-toggle="modal"
-                data-target="#confirmModal">
-            Submit
-        </button>
-    </form>
+            <div class="form-group">
+                <label>Current Password</label>
+                <input type="password"
+                       name="current_password"
+                       class="form-control"
+                       placeholder="Enter current password">
+            </div>
+
+            <div class="form-group">
+                <label>New Password</label>
+                <input type="password"
+                       name="new_password"
+                       class="form-control"
+                       placeholder="Enter new password">
+            </div>
+
+            <!-- Button triggers modal -->
+            <button type="button"
+                    class="btn btn-primary btn-block"
+                    data-toggle="modal"
+                    data-target="#confirmModal">
+                Submit
+            </button>
+        </form>
+    </div>
+
 </div>
 
 <!-- Confirmation Modal -->
@@ -70,7 +73,9 @@
                 <button class="btn btn-secondary" data-dismiss="modal">
                     Cancel
                 </button>
-                <button class="btn btn-primary">
+
+                <!-- REAL SUBMIT BUTTON -->
+                <button type="submit" formmethod="POST" class="btn btn-primary">
                     Yes, Change
                 </button>
             </div>
@@ -79,9 +84,4 @@
     </div>
 </div>
 
-<!-- Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-
-</body>
-</html>
+{% endblock %}

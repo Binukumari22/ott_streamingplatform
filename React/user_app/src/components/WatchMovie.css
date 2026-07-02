@@ -1,0 +1,128 @@
+/* ============================================================
+   WATCH MOVIE — Immersive detail / landing page
+   ============================================================ */
+
+.watch-page {
+  min-height: 100vh;
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+}
+
+.watch-overlay {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+
+  /* Cinematic left-pull gradient */
+  background: linear-gradient(
+    105deg,
+    rgba(4, 5, 10, 0.96) 0%,
+    rgba(4, 5, 10, 0.88) 30%,
+    rgba(4, 5, 10, 0.55) 55%,
+    rgba(4, 5, 10, 0.15) 80%,
+    transparent 100%
+  );
+}
+
+.watch-content {
+  max-width: 560px;
+  padding: 80px 60px;
+  color: white;
+}
+
+/* Genre chip */
+.watch-content > p:first-of-type {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent-teal);
+  background: rgba(6,182,212,0.1);
+  border: 1px solid rgba(6,182,212,0.25);
+  border-radius: 99px;
+  padding: 4px 14px;
+  margin-bottom: 14px;
+}
+
+/* Title */
+.watch-content h1 {
+  font-size: 46px;
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -1.5px;
+  color: #fff;
+  margin-bottom: 16px;
+  text-shadow: 0 2px 30px rgba(0,0,0,0.5);
+}
+
+/* Description */
+.watch-content p + p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.72);
+  margin-bottom: 36px;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ---- BUTTONS ---- */
+.watch-buttons {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+/* Watch Now */
+.watch-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 32px;
+  background: linear-gradient(90deg, #e8edf5, #c7d3e6);
+  border: none;
+  border-radius: var(--radius-md);
+  color: #050a18;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: -0.2px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+
+.watch-btn:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.6);
+}
+
+.watch-btn:active { transform: translateY(0) scale(1); }
+
+/* Add to Watchlist */
+.watchlist-btn {
+  width: 50px;
+  height: 50px;
+  background: rgba(255,255,255,0.1);
+  border: 1.5px solid rgba(255,255,255,0.25);
+  border-radius: var(--radius-md);
+  color: white;
+  font-size: 22px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(8px);
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+}
+
+.watchlist-btn:hover {
+  background: rgba(124,58,237,0.25);
+  border-color: rgba(124,58,237,0.5);
+  transform: translateY(-2px);
+}
